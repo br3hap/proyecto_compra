@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -74,9 +74,17 @@ WSGI_APPLICATION = 'proyecto_compra.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME', 'bd_purchase'),
+        'USER': os.environ.get('DB_USER', 'user_purchase'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'pass_purchase'),
+        'HOST': os.environ.get('DB_HOST', 'db'),  # "db" es el nombre del servicio en docker-compose
+        'PORT': '5432',
     }
 }
 
