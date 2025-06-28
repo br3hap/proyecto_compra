@@ -1,0 +1,44 @@
+# version: "3.9"
+
+services:
+  db:
+    image: postgres:14
+    # restart: always
+    environment:
+      POSTGRES_DB: bd_purchase
+      POSTGRES_USER: user_purchase
+      POSTGRES_PASSWORD: pass_purchase
+    ports:
+      - "5473:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8001
+    volumes:
+      - .:/code
+    ports:
+      - "8051:8001"
+    depends_on:
+      - db
+    environment:
+      - DB_NAME=bd_purchase
+      - DB_USER=user_purchase
+      - DB_PASSWORD=pass_purchase
+      - DB_HOST=db
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pg10
+    # restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'admin@gmail.com'
+      PGADMIN_DEFAULT_PASSWORD: 'admin'
+    ports:
+      - "69:80"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
