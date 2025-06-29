@@ -42,6 +42,13 @@ class IdiomaList(generic.ListView):
     template_name = 'bases/idiomas.html'
     model = Idioma
     context_object_name = 'obj'
+    
+
+class FraseList(generic.ListView):
+    template_name = "bases/frases.html"
+    model = Frase
+    context_object_name="obj"
+
 
     def get_queryset(self):
         qs = Frase.objects.all()
