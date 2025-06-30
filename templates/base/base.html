@@ -66,6 +66,9 @@
         Opciones de Menú {{request.path}}
       </div>
 
+      {% url 'inv:categoria_list' as cat_url %}
+      {% url 'inv:subcategoria_list' as s_cat_url %}
+
 
 
       <!-- Nav Item - Pages Collapse Menu -->
@@ -74,21 +77,24 @@
           <i class="fas fa-fw fa-cog"></i>
           <span>Catálogos</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseTwo" class="collapse {% if cat_url in request.path or s_cat_url in request.path %} show {% endif %}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Catálogos de Inventario</h6>
-
-            <a class="collapse-item">Categorias</a>
-
-            <a class="collapse-item">Sub Categorias</a>
-
-
-            <a class="collapse-item" href="#">Marca</a>
-
-
-            <a class="collapse-item" href="#">Unidad Medida</a>
-
-            <a class="collapse-item" href="#">Producto</a>
+            {% if perms.inv.view_categoria %}
+            <a class="collapse-item {% if cat_url in request.path %} active {% endif %}" href="{{cat_url}}">Categorias</a>
+            {% endif %}
+            {% if perms.inv.view_subcategoria %}
+            <a class="collapse-item {% if s_cat_url in request.path %} active {% endif %}" href="{{s_cat_url}}">Sub Categorias</a>
+            {% endif %}
+            {% if perms.inv.view_marca %}
+            <a class="collapse-item" href="{% url 'inv:marca_list' %}">Marca</a>
+            {% endif %}
+            {% if perms.inv.view_unidadmedida %}
+            <a class="collapse-item" href="{% url 'inv:um_list' %}">Unidad Medida</a>
+            {% endif %}
+            {% if perms.inv.view_producto %}
+            <a class="collapse-item" href="{% url 'inv:producto_list' %}">Producto</a>
+            {% endif %}
 
             
             <h6 class="collapse-header">Catálogos de Compras:</h6>
