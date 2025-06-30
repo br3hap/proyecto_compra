@@ -1,0 +1,90 @@
+{% extends 'base/base.html' %}
+
+{% block page_content %}
+<div class="card shadow mb-4">
+  <!-- Card Header - Dropdown -->
+  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">Listado de Proveedor</h6>
+    <div class="dropdown no-arrow">
+      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+        <div class="dropdown-header">Acciones:</div>
+        <a class="dropdown-item" onclick="return abrir_modal('{% url 'cmp:proveedor_new' %}')" href="#"><i class="far fa-calendar-plus"></i> Nuevo</a>
+      </div>
+    </div>
+  </div>
+  <!-- Card Body -->
+  <div class="card-body">
+    {% if not obj %}
+    <div class="alert alert-info">No Proveedores</div>
+    {% endif %}
+    <table class="table table-striped table-hover dt-responsive nowrap" style="width:100%">
+      <thead>
+        <th>Id</th>        
+        <th>Descripcion</th>
+        <th>Dirección</th>
+        <th>Contacto</th>
+        <th>Teléfono</th>
+        <th>EMail</th>
+        <th>Estado</th>
+        <!-- <th class="all">Acciones</th> -->
+         <th></th>
+         <!-- <th></th> -->
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- <button class="btn btn-warning btn-circle" onclick="return abrir_modal('{#% url 'cmp:proveedor_edit' item.id %#}')"><i class="far fa-edit"></i></button>
+            <button class="btn btn-warning btn-circle" onclick="return abrir_modal('{#% url 'cmp:proveedor_inactivar' item.id %#}')">
+              <i class="far fa-thumbs-down"></i>
+            </button> -->
+{% endblock %}
+{% block js_page %}
+<script>
+// Call the dataTables jQuery plugin
+$(document).ready(function() {
+  $('.table').DataTable({
+    "processing":true,
+    "serverSide":true,
+    "deferRender":true,
+    "iDisplayLength":25,
+    "paging":true,
+    "ajax":{
+      "url": "{% url 'api:prv_list' %}",
+      "dataSrc":""
+    },
+    "columns": [
+      { "data": "id" },
+      { "data": "descripcion" },
+      { "data": "direccion" },
+      { "data": "contacto" },
+      { "data": "telefono" },
+      { "data": "email" },
+      { "data": "estado",
+        "render":function(data,type,row){
+          return data ? "Activo" : "Inactivo"
+        }
+       },
+      { "data": null,
+        "render": function(data,type,row){
+          console.log(row)
+          const iconClass = row.estado ? "far fa-thumbs-down" : "far fa-thumbs-up"
+          const iconColor = row.estado ? "btn-danger" : "btn-success"
+          return `
+            <button class="btn btn-warning btn-circle" onclick="return abrir_modal('/cmp/proveedores/edit/${row.id}')"><i class="far fa-edit"></i></button>
+            <button class="btn ${iconColor} btn-circle" onclick="return abrir_modal('/cmp/proveedores/inactivar/${row.id}')">
+              <i class="${iconClass}"></i>
+            </button>
+          `;
+        }
+       },
+      // { "data": null },
+    ]
+  });
+});
+</script>
+{% endblock %}

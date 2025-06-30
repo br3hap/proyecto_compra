@@ -28,7 +28,7 @@ class CategoriaNew(SuccessMessageMixin, SinPrivilegios, generic.CreateView):
     success_message = 'Categoría creada satisfactoriamente'
 
     def form_valid(self, form):
-        form.instence.uc = self.request.user
+        form.instance.uc = self.request.user
         return super().form_valid(form)
     
 class CategoriaEdit(SuccessMessageMixin, SinPrivilegios, generic.UpdateView):

@@ -68,6 +68,7 @@
 
       {% url 'inv:categoria_list' as cat_url %}
       {% url 'inv:subcategoria_list' as s_cat_url %}
+      {% url 'cmp:compras_list' as cmp_url %}
 
 
 
@@ -96,11 +97,11 @@
             <a class="collapse-item" href="{% url 'inv:producto_list' %}">Producto</a>
             {% endif %}
 
-            
             <h6 class="collapse-header">Catálogos de Compras:</h6>
-            
 
-            <a class="collapse-item" href="#">Proveedores</a>
+            {% if perms.cmp.view_proveedor %}
+            <a class="collapse-item" href="{% url 'cmp:proveedor_list' %}">Proveedores</a>
+            {% endif %}
 
 
             <h6 class="collapse-header">Catálogos de Facturación:</h6>
@@ -113,15 +114,15 @@
           </div>
         </div>
       </li>
-      <li class="nav-item">
+      <li class="nav-item {% if cmp_url in request.path  %} active {% endif %}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompras" aria-expanded="true" aria-controls="collapseCompras">
           <i class="fas fa-fw fa-truck"></i>
           <span>Movimientos</span>
         </a>
-        <div id="collapseCompras" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseCompras" class="collapse {% if cmp_url in request.path  %} show {% endif %}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Entradas</h6>
-            <a class="collapse-item">Compras</a>
+            <a class="collapse-item {% if cmp_url in request.path  %} active {% endif %}" href="{% url 'cmp:compras_list' %}">Compras</a>
 
             <h6 class="collapse-header">Salidas</h6>
             <a class="collapse-item" href="#">Facturas</a>
