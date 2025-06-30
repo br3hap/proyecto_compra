@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'bases',
     'inv',
     'cmp',
-    'django_userforeignkey'
+    'fac',
+    'django_userforeignkey',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
